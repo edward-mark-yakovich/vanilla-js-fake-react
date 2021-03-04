@@ -109,7 +109,7 @@ class Posts extends Component {
                               </button>
 
                               <div class="pagination__counter">
-                                <label class="vh" htmlFor="pagination__input-ID-01">{page}</label>
+                                <label class="vh" for="pagination__input-ID-01">{page}</label>
                                 <input placeholder="${page}" onkeyup="document.componentRegistry[${this._id}].handlePaginationDirect(this)" value="${page}" type="text" name="pagination__input-ID-01" id="pagination__input-ID-01" />
                               </div>
 
