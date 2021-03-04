@@ -1,0 +1,90 @@
+._request-active .post-listing:after {
+  opacity: 0.9;
+  visibility: visible;
+}
+
+.post-listing {
+  position: relative;
+}
+
+.post-listing:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  background-color: white;
+  z-index: 1;
+  transition: opacity 0.5s ease-in-out 0s,
+              visibility 0.5s ease-in-out 0s;
+}
+
+.post-listing > .grid {
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.post-listing__item {
+  max-width: 50%;
+  flex-basis: 50%;
+}
+
+@media only screen and (min-width: 600px) {
+  .post-listing__item {
+    max-width: 25%;
+    flex-basis: 25%;
+  }
+}
+
+.post-listing__item > a,
+.post-listing__item > button {
+  display: inline-block;
+  width: calc(100% - 20px);
+  outline: 0;
+  border: 0;
+  background: none;
+  border-radius: 8px;
+  color: black;
+  background-color: var(--color-grey-ultra-light);
+  text-decoration: none;
+  margin: var(--spacing-small);
+  padding: var(--spacing-small);
+  transition: color var(--animTime-short) ease-in-out 0s,
+              background-color var(--animTime-short) ease-in-out 0s,
+              transform var(--animTime-short) ease-in-out 0s;
+
+}
+
+.post-listing__item > a:hover,
+.post-listing__item > a:focus,
+.post-listing__item > button:hover,
+.post-listing__item > button:focus {
+  color: #fff;
+  background-color: black;
+  transform: scale(1.1);
+}
+
+.post-listing__img {
+  width: 100%;
+  height: 80px;
+}
+
+.post-listing__img > img {
+  display: inline-block;
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+}
+
+.post-listing__name {
+  font-size: 10px;
+  margin-top: var(--spacing-small);
+  margin-bottom: var(--spacing-small);
+}
+
+.post-listing__excerpt {
+  font-size: var(--font-small);
+}

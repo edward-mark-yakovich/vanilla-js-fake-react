@@ -1,0 +1,33 @@
+.loader {
+	position: relative;
+	opacity: 0;
+	display: none;
+	visibility: hidden;
+	transition: opacity 0.5s ease-in-out 0s,
+							visibility 0.5s ease-in-out 0s;
+}
+
+.loader._init {
+	display: block;
+}
+
+.loader__message {
+	display: none;
+}
+
+.loader__spin {
+	position: relative;
+	width: 70px;
+	height: 70px;
+	animation: loader-rotate 0.5s infinite linear;
+}
+
+.loader__spin svg {
+	width: 100%;
+}
+
+@keyframes loader-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
