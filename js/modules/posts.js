@@ -67,7 +67,8 @@ class Posts extends Component {
     const {
       title,
       posts,
-      page
+      page,
+      perPage
     } = this.state;
 
     return `<div class="page page--posts">
@@ -112,7 +113,7 @@ class Posts extends Component {
                                 <input placeholder="${page}" onkeyup="document.componentRegistry[${this._id}].handlePaginationDirect(this)" value="${page}" type="text" name="pagination__input-ID-01" id="pagination__input-ID-01" />
                               </div>
 
-                              <button class="pagination__btn" onclick="document.componentRegistry[${this._id}].handlePagination('forward')">
+                              <button ${perPage > posts.length ? "disabled" : ""} class="pagination__btn" onclick="document.componentRegistry[${this._id}].handlePagination('forward')">
                                 Next
                               </button>
                             </div>
