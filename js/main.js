@@ -13,6 +13,8 @@ import { SinglePost } from './modules/singlePost.js';
     navPage: sessionStorage.getItem('_globalStore_currentNavPage')
   };
 
+  console.log( globalStore );
+
   const navData = {
     links: [
       {
@@ -75,6 +77,10 @@ import { SinglePost } from './modules/singlePost.js';
   nav.init();
   activeComponent.init();
 
-  location.hash = `#${hashUrl.toLowerCase().replace(/\s/g, '-')}`;
+  if (hashUrl && globalStore.navPage) {
+    location.hash = `#${hashUrl.toLowerCase().replace(/\s/g, '-')}`;
+  } else {
+    location.hash = '';
+  }
 
 }());
