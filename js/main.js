@@ -13,8 +13,6 @@ import { SinglePost } from './modules/singlePost.js';
     navPage: sessionStorage.getItem('_globalStore_currentNavPage')
   };
 
-  console.log( globalStore );
-
   const navData = {
     links: [
       {
