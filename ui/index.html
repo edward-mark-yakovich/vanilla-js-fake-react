@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<title>Test</title>
+
+<script type="text/javascript">
+	const isLocal = window.location.host === 'localhost:8080';
+	const subPath = isLocal ? '' : '/test/fake-react-test';
+	document.write("<base href='" + subPath + "/' />");
+</script>
+
+<link rel="stylesheet" href="css/app.css" type="text/css" media="screen" />
+
+<body>
+
+	<div class="app">
+		<div class="app__inner">
+
+			<div id="loader"></div>
+			<div id="nav"></div>
+			<div id="app"></div>
+
+		</div>
+	</div>
+
+	<script type="module" src="js/main.js?v1.1.4"></script>
+
+</body>
+</html>
