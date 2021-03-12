@@ -9,13 +9,14 @@ class SinglePost extends Component {
 
     this.state = {
       title: props.title,
-      post: []
+      post: [],
+      slug: props.slug
     };
   }
 
   async getData() {
-    const globalStore_currentSlug = sessionStorage.getItem('_globalStore_currentSlug');
-    const dataPost = await request(`http://chinonthetank.com/wp-json/wp/v2/posts?_embed&slug=${globalStore_currentSlug}`);
+    const {slug} = this.state;
+    const dataPost = await request(`http://chinonthetank.com/wp-json/wp/v2/posts?_embed&slug=${slug.id}`);
 
     this.setState({
       post: dataPost?.response?.[0] || []

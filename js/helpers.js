@@ -1,3 +1,7 @@
+import { router, subPath } from './main.js';
+
+
+
 // ****** Request ******
 export const request = async (endpoint, authKey = '', headerMeta = false) => {
   let fullResponse = null;
@@ -38,11 +42,10 @@ export const isEmptyObj = obj => Object.keys(obj).length === 0;
 
 
 
-// ****** goTo - fake router update ******
-export const handleRouteUpdate = (navPage, slug) => {
-  if (slug) sessionStorage.setItem('_globalStore_currentSlug', slug);
-  sessionStorage.setItem('_globalStore_currentNavPage', navPage);
+// ****** navigateTo - router update ******
+export const navigateTo = url => {
+  history.pushState(null, null, (subPath + url));
+  sessionStorage.setItem('_globalStore_currentNavPage', url);
 
-  // since is all faked - simulates children "subscribers" getting new "dispatched" data from "Store"
-  location.reload();
-}
+  router();
+};

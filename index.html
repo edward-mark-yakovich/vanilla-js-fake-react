@@ -7,6 +7,12 @@
 
 <title>Test</title>
 
+<script type="text/javascript">
+	const isLocal = window.location.host === 'localhost:8080';
+	const subPath = isLocal ? '' : '/test/fake-react-test';
+	if (!isLocal) document.write("<base href='" + subPath + "/' />");
+</script>
+
 <link rel="stylesheet" href="css/app.css" type="text/css" media="screen" />
 
 <body>
@@ -21,7 +27,7 @@
 		</div>
 	</div>
 
-	<script type="module" src="js/main.js?v1.0.1"></script>
+	<script type="module" src="js/main.js?v1.1.4"></script>
 
 </body>
 </html>

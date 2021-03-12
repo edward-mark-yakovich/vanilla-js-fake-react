@@ -1,4 +1,4 @@
-import { request, handleRouteUpdate } from '../helpers.js';
+import { request, navigateTo } from '../helpers.js';
 import Component from './component.js';
 
 class Posts extends Component {
@@ -51,10 +51,10 @@ class Posts extends Component {
     sessionStorage.setItem('_globalStore_currentPage', newPage);
   }
 
-  handleGoToSlug(targ) {
-    const slug = targ.dataset.slug;
+  handleGoTo(targ) {
+    const url = targ.dataset.navigate;
 
-    handleRouteUpdate('Single Page', slug);
+    navigateTo(`/posts/${url}`);
   }
 
   reRender(updatedState = this.state) {
@@ -90,7 +90,7 @@ class Posts extends Component {
                             ${posts.map(post => {
                               return (
                                 `<li class="post-listing__item">
-                                  <button data-slug="${post?.slug || ''}" onclick="document.componentRegistry[${this._id}].handleGoToSlug(this)">
+                                  <button data-navigate="${post?.slug || ''}" onclick="document.componentRegistry[${this._id}].handleGoTo(this)">
                                     <div class="post-listing__img">
                                       <img src="${post?._embedded?.['wp:featuredmedia']?.['0'].source_url || ''}" />
                                     </div>

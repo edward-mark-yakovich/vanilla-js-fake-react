@@ -1,15 +1,32 @@
 import { Home } from './modules/home.js';
-import { Loader } from './modules/loader.js';
 import { Nav } from './modules/nav.js';
+import { Loader } from './modules/loader.js';
 import { Posts } from './modules/posts.js';
 import { SinglePost } from './modules/singlePost.js';
 
-(function() {
+const isLocal = window.location.host === 'localhost:8080';
+export const subPath = isLocal ? '' : '/test/fake-react-test';
+const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
-  // fake "Store" with sessionStorage
+const getParams = match => {
+  const values = match.result.slice(1);
+  const keys = Array.from(match.route.path.matchAll(/:(\w+)/g)).map(result => result[1]);
+
+  return Object.fromEntries(keys.map((key, i) => {
+      return [key, values[i]];
+  }));
+};
+
+export const navigateTo = url => {
+  history.pushState(null, null, (subPath + url));
+  sessionStorage.setItem('_globalStore_currentNavPage', url);
+
+  router();
+};
+
+export const router = () => {
   const globalStore = {
     page: sessionStorage.getItem('_globalStore_currentPage'),
-    slug: sessionStorage.getItem('_globalStore_currentSlug'),
     navPage: sessionStorage.getItem('_globalStore_currentNavPage')
   };
 
@@ -17,18 +34,41 @@ import { SinglePost } from './modules/singlePost.js';
     links: [
       {
         title: 'Home',
-        isActive: globalStore.navPage === 'Home'
+        isActive: globalStore.navPage === '/'
       },
       {
         title: 'Posts',
-        isActive: globalStore.navPage === 'Posts'
+        isActive: globalStore.navPage === '/posts'
       },
       {
-        title: 'Single Page',
-        isActive: globalStore.navPage === 'Single Page'
+        title: 'Single Page'
       }
     ]
   };
+
+  const routes = [
+    { path: `${subPath}/`, view: Home, nameId: 'home' },
+    { path: `${subPath}/posts`, view: Posts, nameId: 'posts' },
+    { path: `${subPath}/posts/:id`, view: SinglePost, nameId: 'single-post' }
+  ];
+
+  const potentialMatches = routes.map(route => {
+    return {
+      route: route,
+      result: location.pathname.match(pathToRegex(route.path))
+    };
+  });
+
+  let match = potentialMatches.find(potentialMatch => potentialMatch.result !== null),
+      data = {};
+
+  if (!match) {
+    match = {
+      route: routes[0],
+      result: [location.pathname]
+    };
+  }
+
   const homeData = {
     title: 'Home Page',
     homeIntro: [],
@@ -43,42 +83,30 @@ import { SinglePost } from './modules/singlePost.js';
   const singlePostData = {
     title: 'Single Post Page',
     post: [],
-    slug: globalStore.slug  || ''
+    slug: getParams(match) || ''
   };
 
+  switch (match.route.nameId) {
+    case 'home':
+      data = homeData;
+      break;
+    case 'posts':
+      data = postData;
+      break;
+    case 'single-post':
+      data = singlePostData;
+      break;
+  }
+
+  const SelectedRoute = match.route.view;
   const loader = new Loader('loader');
   const nav = new Nav('nav', navData);
-  const home = new Home('app', homeData);
-  const posts = new Posts('app', postData);
-  const singlePost = new SinglePost('app', singlePostData);
-
-  let activeComponent = null;
-  let hashUrl = globalStore.navPage;
-
-  // find which component is "Route"
-  switch (globalStore.navPage) {
-    case "Home":
-      activeComponent = home;
-      break;
-    case "Posts":
-      activeComponent = posts;
-      break;
-    case "Single Page":
-      hashUrl = globalStore.slug;
-      activeComponent = singlePost;
-      break;
-    default:
-      activeComponent = home;
-  }
+  const view = new SelectedRoute('app', data);
 
   loader.init();
   nav.init();
-  activeComponent.init();
+  view.init();
+};
 
-  if (hashUrl && globalStore.navPage) {
-    location.hash = `#${hashUrl.toLowerCase().replace(/\s/g, '-')}`;
-  } else {
-    location.hash = '';
-  }
-
-}());
+window.addEventListener("popstate", router);
+document.addEventListener("DOMContentLoaded", router);
